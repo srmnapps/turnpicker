@@ -113,6 +113,7 @@ body::after {
   font-size: 2.6rem; letter-spacing: .1em; color: var(--text);
   background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 60%, var(--rose) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: flex; align-items: center;
 }
 .logo-sub { font-size: .7rem; letter-spacing: .24em; text-transform: uppercase; color: var(--sub); margin-top: 4px; }
 .logo-dot {

@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo } from 'react'
 
 const Row = memo(function Row({ i, name, result, isActive, isDone }) {
   let cls = 'sb-row'
@@ -24,7 +24,6 @@ const Row = memo(function Row({ i, name, result, isActive, isDone }) {
 })
 
 export default function ResultTable({ state }) {
-  const [isOpen, setIsOpen] = useState(false)
   const { n, names, results, cur, done } = state
   const assigned = results.filter(r => r !== null).length
 
@@ -32,41 +31,34 @@ export default function ResultTable({ state }) {
     <div className="scoreboard-card">
       <div className="sb-header">
         <div className="sb-title">RESULTS</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '.75rem' }}>
-          <div className="sb-progress">{assigned} / {n} assigned</div>
-          <button className="toggle-btn" onClick={() => setIsOpen(o => !o)}>
-            {isOpen ? 'Hide ▲' : 'Show ▼'}
-          </button>
-        </div>
+        <div className="sb-progress">{assigned} / {n} assigned</div>
       </div>
 
-      {isOpen && (
-        <div style={{ animation: 'fadeUp .3s cubic-bezier(.22,.68,0,1.2) both' }}>
-          <table className="sb-table">
-            <thead>
-              <tr>
-                <th>Pos</th>
-                <th>Player</th>
-                <th style={{ textAlign: 'right', paddingRight: '1.25rem' }}>Turn #</th>
-                <th style={{ textAlign: 'right' }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: n }, (_, i) => (
-                <Row
-                  key={i}
-                  i={i}
-                  name={names[i]}
-                  result={results[i]}
-                  isActive={i === cur && !done}
-                  isDone={results[i] !== null}
-                />
-              ))}
-            </tbody>
-          </table>
-          {done && <PlayOrder names={names} results={results} n={n} />}
-        </div>
-      )}
+      <div style={{ animation: 'fadeUp .3s cubic-bezier(.22,.68,0,1.2) both' }}>
+        <table className="sb-table">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th>Player</th>
+              <th style={{ textAlign: 'right', paddingRight: '1.25rem' }}>Turn #</th>
+              <th style={{ textAlign: 'right' }}>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: n }, (_, i) => (
+              <Row
+                key={i}
+                i={i}
+                name={names[i]}
+                result={results[i]}
+                isActive={i === cur && !done}
+                isDone={results[i] !== null}
+              />
+            ))}
+          </tbody>
+        </table>
+        {done && <PlayOrder names={names} results={results} n={n} />}
+      </div>
     </div>
   )
 }

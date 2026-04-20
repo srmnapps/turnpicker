@@ -226,7 +226,7 @@ body::after {
 .game-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.25rem; align-items: start; }
 @media (max-width: 680px) {
   .game-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr !important;
     gap: .6rem;
   }
 

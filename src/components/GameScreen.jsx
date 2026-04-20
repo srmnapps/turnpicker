@@ -109,7 +109,7 @@ export default function GameScreen({
         <div className="left-col">
           <div className="drum-card">
             <div className="drum-header">
-              <span className="drum-header-label">Drum</span>
+              <span className="drum-header-label">Picker</span>
               <span className="pool-count">{pool.length} remaining</span>
             </div>
             <Drum ref={drumRef} n={n} />

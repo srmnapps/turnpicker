@@ -4,8 +4,6 @@ import PoolPills from './PoolPills'
 import ResultTable from './ResultTable'
 import ResultBanner from './ResultBanner'
 
-const SPIN_MS = 1800 + 700 + 250 + 200
-
 export default function GameScreen({
   state, spinning, setSpinning,
   commitSpin, commitAutoAssign, finishGame,
@@ -14,7 +12,6 @@ export default function GameScreen({
   const drumRef = useRef(null)
   const { pool, cur, n, names, done, results } = state
 
-  // On mount or n change: rebuild drum, re-apply used faces, restore position
   useEffect(() => {
     if (!drumRef.current) return
     drumRef.current.build()
@@ -23,7 +20,7 @@ export default function GameScreen({
     }
     const lastVal = results[cur - 1]
     if (lastVal != null) drumRef.current.spinTo(lastVal, true)
-  }, [])  // eslint-disable-line
+  }, []) // eslint-disable-line
 
   async function doSpin() {
     if (spinning || done) return
@@ -41,7 +38,6 @@ export default function GameScreen({
     await drumRef.current.spinTo(value)
     setTimeout(() => drumRef.current.markUsed(value), 2000)
 
-    // Check if next state will have 1 left — auto assign silently
     const nextPool = pool.filter(v => v !== value)
     if (nextPool.length === 1) {
       setSpinning(false)
@@ -56,7 +52,6 @@ export default function GameScreen({
 
   async function runAutoAssign(knownValue) {
     setSpinning(true)
-    // get value from current pool if not passed
     const value = knownValue ?? pool[0]
     commitAutoAssign(value)
     await drumRef.current.spinTo(value)
@@ -67,13 +62,23 @@ export default function GameScreen({
 
   function handleUndo() {
     if (spinning) return
-    // unmark the last assigned value visually
     const lastVal = state.results[state.cur - 1]
     if (lastVal != null) drumRef.current.unmarkUsed(lastVal)
     doUndo()
   }
 
-  // Spin button label
+  // Build play order from current results
+  function getPlayOrder() {
+    const order = []
+    for (let t = 1; t <= n; t++) {
+      const pi = results.indexOf(t)
+      if (pi >= 0) order.push({ turn: t, name: names[pi] })
+    }
+    return order
+  }
+
+  const playOrder = getPlayOrder()
+
   let spinLabel = 'SPIN THE DRUM'
   let spinClass = 'btn-spin active-spin'
   if (done) { spinLabel = '✓ ORDER COMPLETE'; spinClass = 'btn-spin done-spin' }
@@ -118,6 +123,25 @@ export default function GameScreen({
               </button>
             </div>
           </div>
+
+          {/* Play order below drum */}
+          {playOrder.length > 0 && (
+            <div className="play-order-card">
+              <div className="play-order-title">Play Order</div>
+              <div className="play-order-list">
+                {playOrder.map(({ turn, name }, idx) => (
+                  <div key={turn} className="play-order-item">
+                    <span className="play-order-num">{turn}</span>
+                    <span className="play-order-name">{name}</span>
+                    {idx < playOrder.length - 1 && (
+                      <span className="play-order-arrow">→</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <PoolPills pool={pool} n={n} />
         </div>
 

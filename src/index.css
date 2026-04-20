@@ -443,3 +443,91 @@ td { padding: .75rem 1.25rem; font-size: .9rem; }
   box-shadow: 0 8px 32px rgba(0,0,0,.4);
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+/* ── PLAY ORDER CARD ── */
+.play-order-card {
+  background: var(--s1); border: 1px solid var(--border2);
+  border-radius: var(--rad); padding: .9rem 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  animation: fadeUp .4s cubic-bezier(.22,.68,0,1.2) both;
+}
+.play-order-title {
+  font-size: .63rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--sub); margin-bottom: .7rem;
+}
+.play-order-list {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+}
+.play-order-item {
+  display: flex; align-items: center; gap: 4px;
+}
+.play-order-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
+  color: var(--cyan); line-height: 1;
+  background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.3);
+  border-radius: 6px; width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+}
+.play-order-name {
+  font-size: .82rem; color: var(--text); font-weight: 500;
+}
+.play-order-arrow {
+  font-size: .75rem; color: var(--dim); margin: 0 2px;
+}
+
+/* ── MOBILE LAYOUT FIX ── */
+@media (max-width: 680px) {
+  .game-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .game-grid > div:last-child {
+    display: contents;
+  }
+
+  .scoreboard-card {
+    order: 2;
+  }
+
+  .result-banner {
+    order: 3;
+  }
+
+  .left-col {
+    order: 1;
+  }
+
+  body {
+    padding: 0 .75rem 4rem;
+  }
+
+  .site-header {
+    padding: 1.25rem 0 1.5rem;
+  }
+
+  .logo-main {
+    font-size: 2rem;
+  }
+
+  .drum-scene {
+    --drum-h: 260px;
+  }
+
+  .game-topbar {
+    gap: .5rem;
+  }
+
+  .sb-table thead th,
+  td {
+    padding: .6rem .75rem;
+  }
+
+  .td-turn {
+    font-size: 1.4rem;
+    padding-right: .75rem;
+  }
+
+  .play-order-card {
+    font-size: .8rem;
+  }
+}

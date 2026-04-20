@@ -2,7 +2,6 @@ import { useRef, useEffect, useImperativeHandle, forwardRef } from 'react'
 
 const REPEAT = 20
 const FACE_H = 64
-const DRUM_H = 320
 
 const Drum = forwardRef(function Drum({ n }, ref) {
   const drumEl = useRef(null)
@@ -29,6 +28,10 @@ const Drum = forwardRef(function Drum({ n }, ref) {
     el.style.transform = 'translateY(0)'
   }
 
+  function getDrumH() {
+    return drumEl.current?.parentElement?.offsetHeight || 320
+  }
+
   function spinTo(num, instant = false) {
     const el = drumEl.current
     if (!el) return Promise.resolve()
@@ -37,11 +40,11 @@ const Drum = forwardRef(function Drum({ n }, ref) {
     const matches = []
     faces.forEach((f, i) => { if (Number(f.dataset.val) === num) matches.push(i) })
 
-    // pick from middle third to avoid edge clipping
     const mid = matches.filter(i => i > n * 4 && i < n * (REPEAT - 4))
     const pick = mid[Math.floor(Math.random() * mid.length)] ?? matches[Math.floor(Math.random() * matches.length)]
 
-    const centreY = DRUM_H / 2 - FACE_H / 2
+    const drumH = getDrumH()
+    const centreY = drumH / 2 - FACE_H / 2
     const target = centreY - pick * FACE_H
 
     if (instant) {
@@ -64,11 +67,8 @@ const Drum = forwardRef(function Drum({ n }, ref) {
 
       setTimeout(() => {
         clearInterval(tick)
-
-        // settle: overshoot then snap
         el.style.transition = 'transform 280ms cubic-bezier(.34,1.56,.64,1)'
         el.style.transform = `translateY(${target + 10}px)`
-
         setTimeout(() => {
           el.style.transition = 'transform 220ms cubic-bezier(.25,.1,.25,1)'
           el.style.transform = `translateY(${target}px)`

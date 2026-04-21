@@ -1,12 +1,21 @@
 import { useRef, useEffect, useImperativeHandle, forwardRef } from 'react'
 
 const REPEAT = 20
-const FACE_H = 64
 
 const Drum = forwardRef(function Drum({ n }, ref) {
   const drumEl = useRef(null)
+  const sceneEl = useRef(null)
 
   useEffect(() => { build() }, [n])
+
+  function getFaceH() {
+    const face = drumEl.current?.querySelector('.drum-face')
+    return face?.offsetHeight || 64
+  }
+
+  function getDrumH() {
+    return sceneEl.current?.offsetHeight || 320
+  }
 
   function build() {
     const el = drumEl.current
@@ -28,10 +37,6 @@ const Drum = forwardRef(function Drum({ n }, ref) {
     el.style.transform = 'translateY(0)'
   }
 
-  function getDrumH() {
-    return drumEl.current?.parentElement?.offsetHeight || 320
-  }
-
   function spinTo(num, instant = false) {
     const el = drumEl.current
     if (!el) return Promise.resolve()
@@ -43,9 +48,10 @@ const Drum = forwardRef(function Drum({ n }, ref) {
     const mid = matches.filter(i => i > n * 4 && i < n * (REPEAT - 4))
     const pick = mid[Math.floor(Math.random() * mid.length)] ?? matches[Math.floor(Math.random() * matches.length)]
 
+    const faceH = getFaceH()
     const drumH = getDrumH()
-    const centreY = drumH / 2 - FACE_H / 2
-    const target = centreY - pick * FACE_H
+    const centreY = drumH / 2 - faceH / 2
+    const target = centreY - pick * faceH
 
     if (instant) {
       el.style.transition = 'none'
@@ -56,7 +62,7 @@ const Drum = forwardRef(function Drum({ n }, ref) {
 
     return new Promise(resolve => {
       const spins = 6 + Math.random() * 4
-      const extra = spins * n * FACE_H
+      const extra = spins * n * faceH
       const duration = 1900 + Math.random() * 600
 
       el.classList.add('spinning')
@@ -82,9 +88,15 @@ const Drum = forwardRef(function Drum({ n }, ref) {
   }
 
   function applyActiveStyle(faces, num) {
+    const faceH = getFaceH()
     faces.forEach(f => {
-      f.style.color = Number(f.dataset.val) === num ? 'var(--text)' : ''
-      f.style.fontSize = Number(f.dataset.val) === num ? '3rem' : ''
+      if (Number(f.dataset.val) === num) {
+        f.style.color = 'var(--text)'
+        f.style.fontSize = `${faceH * 0.6}px`
+      } else {
+        f.style.color = ''
+        f.style.fontSize = ''
+      }
     })
   }
 
@@ -132,7 +144,7 @@ const Drum = forwardRef(function Drum({ n }, ref) {
   useImperativeHandle(ref, () => ({ spinTo, markUsed, unmarkUsed, build, resetPosition }))
 
   return (
-    <div className="drum-scene">
+    <div className="drum-scene" ref={sceneEl}>
       <div className="drum-shade-l" />
       <div className="drum-shade-r" />
       <div className="drum" ref={drumEl} />

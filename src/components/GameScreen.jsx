@@ -34,8 +34,10 @@ export default function GameScreen({
     const idx = Math.floor(Math.random() * pool.length)
     const value = pool[idx]
 
-    commitSpin(value)
+    // spin first, THEN update state so table updates after spin
     await drumRef.current.spinTo(value)
+
+    commitSpin(value)
     setTimeout(() => drumRef.current.markUsed(value), 2000)
 
     const nextPool = pool.filter(v => v !== value)
@@ -53,8 +55,11 @@ export default function GameScreen({
   async function runAutoAssign(knownValue) {
     setSpinning(true)
     const value = knownValue ?? pool[0]
-    commitAutoAssign(value)
+
+    // spin first, THEN update state
     await drumRef.current.spinTo(value)
+
+    commitAutoAssign(value)
     setTimeout(() => drumRef.current.markUsed(value), 2000)
     setSpinning(false)
     finishGame()
@@ -67,7 +72,6 @@ export default function GameScreen({
     doUndo()
   }
 
-  // Build play order from current results
   function getPlayOrder() {
     const order = []
     for (let t = 1; t <= n; t++) {
@@ -86,7 +90,6 @@ export default function GameScreen({
 
   return (
     <section className="game">
-      {/* Top bar */}
       <div className="game-topbar">
         <div className="round-badge">
           <div className="round-dot" style={done ? { background: 'var(--green)', boxShadow: '0 0 8px var(--green)', animation: 'none' } : {}} />
@@ -104,7 +107,6 @@ export default function GameScreen({
         </div>
       </div>
 
-      {/* Grid */}
       <div className="game-grid">
         <div className="left-col">
           <div className="drum-card">
@@ -124,7 +126,6 @@ export default function GameScreen({
             </div>
           </div>
 
-          {/* Play order below drum */}
           {playOrder.length > 0 && (
             <div className="play-order-card">
               <div className="play-order-title">Play Order</div>
@@ -145,7 +146,7 @@ export default function GameScreen({
           <PoolPills pool={pool} n={n} />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: 0 }}>
           <ResultTable state={state} />
           <ResultBanner state={state} />
         </div>

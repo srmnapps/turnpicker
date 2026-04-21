@@ -661,58 +661,112 @@ td { padding: .75rem 1.25rem; font-size: .9rem; }
 
 /* ── MOBILE LAYOUT FIX ── */
 @media (max-width: 680px) {
-  .game-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-
-  .game-grid > div:last-child {
-    display: contents;
-  }
-
-  .scoreboard-card {
-    order: 2;
-  }
-
-  .result-banner {
-    order: 3;
-  }
-
-  .left-col {
-    order: 1;
-  }
-
   body {
-    padding: 0 .75rem 4rem;
+    padding: 0 0 3rem;
+    align-items: stretch;
   }
 
   .site-header {
-    padding: 1.25rem 0 1.5rem;
+    padding: .85rem .75rem 1rem;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .logo-main {
-    font-size: 2rem;
-  }
+  .logo-main { font-size: 1.4rem; }
+  .logo-sub { font-size: .5rem; letter-spacing: .1em; }
 
-  .drum-scene {
-    --drum-h: 260px;
+  .game {
+    width: 100%;
+    padding: 0 .4rem;
   }
 
   .game-topbar {
-    gap: .5rem;
+    gap: .3rem;
+    flex-wrap: nowrap;
   }
 
-  .sb-table thead th,
-  td {
-    padding: .6rem .75rem;
+  .round-badge {
+    padding: .25rem .5rem .25rem .35rem;
+    font-size: .62rem;
+    flex-shrink: 0;
   }
 
-  .td-turn {
-    font-size: 1.4rem;
-    padding-right: .75rem;
+  .round-dot { width: 6px; height: 6px; }
+
+  .topbar-actions { gap: .3rem; }
+
+  .btn-sm {
+    padding: .25rem .5rem;
+    font-size: .62rem;
   }
 
-  .play-order-card {
-    font-size: .8rem;
+  .game-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: .4rem;
+    width: 100%;
   }
+
+  .left-col { gap: .4rem; min-width: 0; }
+
+  /* Drum */
+  .drum-card { min-width: 0; overflow: hidden; }
+  .drum-header { padding: .35rem .4rem; }
+  .drum-header-label { font-size: .48rem; }
+  .pool-count { font-size: .52rem; }
+  .drum-scene { height: 160px; }
+  .drum-face { height: 50px; font-size: 1.4rem; }
+  .drum-window { height: 52px; }
+  .spin-btn-wrap { padding: .4rem; }
+  .btn-spin {
+    font-size: .65rem;
+    padding: .45rem .2rem;
+    letter-spacing: .04em;
+  }
+
+  /* Pills */
+  .pool-card { padding: .4rem .45rem; }
+  .pool-title { font-size: .48rem; margin-bottom: .3rem; }
+  .pill { width: 20px; height: 20px; font-size: .65rem; border-radius: 4px; }
+  .pills-wrap { gap: 2px; }
+
+  /* Play order */
+  .play-order-card { padding: .4rem .45rem; }
+  .play-order-title { font-size: .48rem; margin-bottom: .3rem; }
+  .play-order-num { width: 16px; height: 16px; font-size: .62rem; border-radius: 3px; }
+  .play-order-name { font-size: .58rem; }
+  .play-order-arrow { font-size: .52rem; margin: 0; }
+  .play-order-list { gap: 2px; }
+
+  /* Result table */
+  .scoreboard-card { min-width: 0; overflow: hidden; }
+  .sb-header { padding: .35rem .4rem; flex-direction: column; align-items: flex-start; gap: .2rem; }
+  .sb-title { font-size: .72rem; }
+  .sb-progress { font-size: .5rem; }
+
+  .sb-table { table-layout: fixed; width: 100%; }
+  .sb-table colgroup { display: none; }
+  .sb-table thead th { padding: .28rem .3rem; font-size: .46rem; letter-spacing: .03em; }
+
+  td { padding: .35rem .3rem; font-size: .62rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .td-pos { font-size: .72rem; width: 16px; padding: .35rem .2rem; }
+  .td-name { font-size: .6rem; max-width: 60px; }
+  .td-turn { font-size: .9rem; padding-right: .3rem; }
+  .td-turn.none { font-size: .6rem; }
+
+  /* Hide badge column completely on mobile */
+  .td-badge { display: none; }
+  .sb-table thead th:last-child { display: none; }
+
+  /* Result banner */
+  .result-banner { padding: .6rem .4rem; }
+  .result-title { font-size: .95rem; letter-spacing: .08em; }
+  .result-emoji { font-size: 1.2rem; }
+  .result-sub { font-size: .58rem; }
+
+  /* Summary */
+  .summary-row { padding: .4rem .4rem; font-size: .56rem; gap: .2rem; }
+  .summary-num { font-size: .72rem; }
+
+  /* Toast */
+  .toast { font-size: .75rem; padding: .5rem 1rem; bottom: 1rem; }
 }
